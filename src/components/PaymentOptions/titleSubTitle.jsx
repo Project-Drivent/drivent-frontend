@@ -15,3 +15,9 @@ export const SubTitleAccommodation = styled.p`
   color: #8e8e8e;
   margin-top: 15px;
 `;
+
+export const SubTitleCard = styled.p`
+  font-size: 20px;
+  color: #8e8e8e;
+  margin-top: 15px;
+`;
