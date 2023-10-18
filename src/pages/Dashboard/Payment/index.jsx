@@ -1,3 +1,5 @@
+import PaymentOptions from "../../../components/PaymentOptions";
+
 export default function Payment() {
-  return 'Pagamento: Em breve!';
+  return <PaymentOptions />;
 }
