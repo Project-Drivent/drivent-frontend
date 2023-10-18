@@ -1,18 +1,25 @@
 import { Title, SubTitle, SubTitleAccommodation } from "./titleSubTitle";
 import { BoxesContainer, StyledBox, Value, Label } from "./boxOptions";
-import React, { useState } from "react";
+import { useState } from "react";
 import AccommodationOptions from "./AccommodationOptions";
+import { ReserveButton } from "./reserveButton";
 
 export default function PaymentOptions() {
   const [selectedOption, setSelectedOption] = useState(null);
-  const [selectedAccommodation, setSelectedAccommodation] = useState(null); // Adicionado estado para a seleção de hospedagem
+  const [selectedAccommodationOption, setSelectedAccommodationOption] = useState(null); // Estado para opção de hospedagem
 
   const handleBoxClick = (index) => {
     if (selectedOption === index) {
       setSelectedOption(null);
+      setSelectedAccommodationOption(null); // Limpe a seleção de hospedagem ao desmarcar a opção
     } else {
       setSelectedOption(index);
     }
+  };
+
+  const finalizarReserva = () => {
+    // Coloque aqui a lógica para finalizar a reserva
+    console.log("Reserva finalizada com sucesso!");
   };
 
   return (
@@ -43,9 +50,16 @@ export default function PaymentOptions() {
             Ótimo! Agora escolha sua modalidade de hospedagem
           </SubTitleAccommodation>
           <AccommodationOptions
-            selectedOption={selectedAccommodation}
-            onOptionSelect={setSelectedAccommodation}
+            selectedOption={selectedAccommodationOption}
+            onOptionSelect={setSelectedAccommodationOption}
           />
+        </>
+      )}
+
+      {selectedAccommodationOption !== null && (
+        <>
+          <SubTitleAccommodation>Fechado! O total ficou em R$ 600. Agora é só confirmar:</SubTitleAccommodation>
+          <ReserveButton onClick={finalizarReserva}>Finalizar Reserva</ReserveButton>
         </>
       )}
     </>

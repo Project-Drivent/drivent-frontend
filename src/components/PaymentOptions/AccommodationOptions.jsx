@@ -1,4 +1,3 @@
-import React from "react";
 import { StyledBox, Value, Label } from "./boxOptions";
 
 export default function AccommodationOptions({
