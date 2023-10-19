@@ -1,30 +1,26 @@
+import React from "react";
 import { StyledBox, Value, Label } from "./boxOptions";
 
 export default function AccommodationOptions({
   selectedOption,
   onOptionSelect,
-  selectedTicket,
 }) {
   return (
     <div style={{ display: "flex" }}>
-      {selectedTicket.includesHotel && (
-        <StyledBox
-          onClick={() => toggleOption("Option1")}
-          selected={selectedOption === "Option1"}
-        >
-          <Value>Com Hotel</Value>
-          <Label>+ R$350</Label>
-        </StyledBox>
-      )}
-      {selectedTicket.isRemote && (
-        <StyledBox
-          onClick={() => toggleOption("Option2")}
-          selected={selectedOption === "Option2"}
-        >
-          <Value>Online</Value>
-          <Label>+ R$0</Label>
-        </StyledBox>
-      )}
+      <StyledBox
+        onClick={() => toggleOption("Option1")}
+        selected={selectedOption === "Option1"}
+      >
+        <Value>Com Hotel</Value>
+        <Label>+ R$350</Label>
+      </StyledBox>
+      <StyledBox
+        onClick={() => toggleOption("Option2")}
+        selected={selectedOption === "Option2"}
+      >
+        <Value>Online</Value>
+        <Label>+ R$0</Label>
+      </StyledBox>
     </div>
   );
 
