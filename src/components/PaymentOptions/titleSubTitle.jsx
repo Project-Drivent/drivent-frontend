@@ -21,3 +21,22 @@ export const SubTitleCard = styled.p`
   color: #8e8e8e;
   margin-top: 15px;
 `;
+
+
+export const EnrollmentErrorMessage = styled.p`
+  font-weight: 400;
+  width: 388px;
+  font-size: 20px;
+  line-height: 23.44px;
+  text-align: center;
+  color: #8E8E8E;
+`;
+
+
+export const CenteredContent = styled.div`
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  height:  388px;
+`;

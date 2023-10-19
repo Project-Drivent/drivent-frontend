@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Title, SubTitle, SubTitleAccommodation, SubTitleCard } from "./titleSubTitle";
+import { Title, SubTitle, SubTitleAccommodation, SubTitleCard,EnrollmentErrorMessage,CenteredContent } from "./titleSubTitle";
 import { BoxesContainer, StyledBox, Value, Label, StyledBoxCard } from "./boxOptions";
 import { ReserveButton } from "./reserveButton";
 import CreditCard from "./CreditCard";
 import useTicketType, { useTicket } from "../../hooks/api/useTicket";
 import AccommodationOptions from "./AccommodationOptions";
+import useEnrollment from "../../hooks/api/useEnrollment";
 
 export default function PaymentOptions() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -13,6 +14,9 @@ export default function PaymentOptions() {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const ticketTypes = useTicketType();
   const ticket = useTicket();
+  const enrollmentUser = useEnrollment();
+
+  console.log(enrollmentUser)
 
   useEffect(() => {
     if (ticket.ticket !== null) { 
@@ -72,79 +76,86 @@ export default function PaymentOptions() {
     <>
       <Title>Ingresso e pagamento</Title>
 
-      {reservaFinalizada ? (
-        <>
-          <div>
-            <SubTitleCard>Ingresso escolhido</SubTitleCard>
-          </div>
-
-          <BoxesContainer>
-            <StyledBoxCard
-              onClick={() => handleBoxClick(0)}
-              selected={selectedOption === 0}
-            >
-              <Value>Presencial + Com Hotel</Value>
-              <Label>R$ {calcularSomaTotal()}</Label>
-            </StyledBoxCard>
-          </BoxesContainer>
-
-          <div>
-            <SubTitleCard>Pagamento</SubTitleCard>
-            <div>
-              <CreditCard></CreditCard>
-            </div>
-          </div>
-        </>
+      {enrollmentUser.enrollment === null ? (
+        <CenteredContent>
+          <EnrollmentErrorMessage>Você precisa completar sua inscrição antes
+de prosseguir pra escolha de ingresso</EnrollmentErrorMessage>
+        </CenteredContent>
       ) : (
-        <>
-          <SubTitle>Primeiro, escolha sua modalidade</SubTitle>
+        reservaFinalizada ? (
+          <>
+            <div>
+              <SubTitleCard>Ingresso escolhido</SubTitleCard>
+            </div>
 
-          <BoxesContainer>
-            {!ticketTypes.ticketLoading &&
-              ticketTypes.tickets.map((item, index) => (
-                <StyledBox
-                  key={index}
-                  onClick={() => handleBoxClick(index)}
-                  selected={selectedOption === index}
-                >
-                  <Value>{item.name}</Value>
-                  <Label>{`R$ ${item.price}`}</Label>
-                </StyledBox>
-              ))
-            }
-          </BoxesContainer>
+            <BoxesContainer>
+              <StyledBoxCard
+                onClick={() => handleBoxClick(0)}
+                selected={selectedOption === 0}
+              >
+                <Value>Presencial + Com Hotel</Value>
+                <Label>R$ {calcularSomaTotal()}</Label>
+              </StyledBoxCard>
+            </BoxesContainer>
 
-          {selectedOption !== null && selectedTicket.name === "Presencial" && (
-            <>
-              <SubTitleAccommodation>
-                Ótimo! Agora escolha sua modalidade de hospedagem
-              </SubTitleAccommodation>
-              <AccommodationOptions
-                selectedOption={selectedAccommodationOption}
-                onOptionSelect={setSelectedAccommodationOption}
-                selectedTicket={selectedTicket}
-              />
-            </>
-          )}
+            <div>
+              <SubTitleCard>Pagamento</SubTitleCard>
+              <div>
+                <CreditCard></CreditCard>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <SubTitle>Primeiro, escolha sua modalidade</SubTitle>
 
-          {selectedAccommodationOption !== null && (
-            <>
-              <SubTitleAccommodation>
-                Fechado! O total ficou em R$ {calcularSomaTotal()}. Agora é só confirmar:
-              </SubTitleAccommodation>
-              <ReserveButton onClick={finalizarReserva}>Finalizar Reserva</ReserveButton>
-            </>
-          )}
+            <BoxesContainer>
+              {!ticketTypes.ticketLoading &&
+                ticketTypes.tickets.map((item, index) => (
+                  <StyledBox
+                    key={index}
+                    onClick={() => handleBoxClick(index)}
+                    selected={selectedOption === index}
+                  >
+                    <Value>{item.name}</Value>
+                    <Label>{`R$ ${item.price}`}</Label>
+                  </StyledBox>
+                ))
+              }
+            </BoxesContainer>
 
-          {selectedOption !== null && selectedTicket.name === "Online" && (
-            <>
-              <SubTitleAccommodation>
-                Fechado! O total ficou em R$ {calcularSomaTotal()}. Agora é só confirmar:
-              </SubTitleAccommodation>
-              <ReserveButton onClick={finalizarReserva}>Finalizar Reserva</ReserveButton>
-            </>
-          )}
-        </>
+            {selectedOption !== null && selectedTicket.name === "Presencial" && (
+              <>
+                <SubTitleAccommodation>
+                  Ótimo! Agora escolha sua modalidade de hospedagem
+                </SubTitleAccommodation>
+                <AccommodationOptions
+                  selectedOption={selectedAccommodationOption}
+                  onOptionSelect={setSelectedAccommodationOption}
+                  selectedTicket={selectedTicket}
+                />
+              </>
+            )}
+
+            {selectedAccommodationOption !== null && (
+              <>
+                <SubTitleAccommodation>
+                  Fechado! O total ficou em R$ {calcularSomaTotal()}. Agora é só confirmar:
+                </SubTitleAccommodation>
+                <ReserveButton onClick={finalizarReserva}>Finalizar Reserva</ReserveButton>
+              </>
+            )}
+
+            {selectedOption !== null && selectedTicket.name === "Online" && (
+              <>
+                <SubTitleAccommodation>
+                  Fechado! O total ficou em R$ {calcularSomaTotal()}. Agora é só confirmar:
+                </SubTitleAccommodation>
+                <ReserveButton onClick={finalizarReserva}>Finalizar Reserva</ReserveButton>
+              </>
+            )}
+          </>
+        )
       )}
     </>
   );
