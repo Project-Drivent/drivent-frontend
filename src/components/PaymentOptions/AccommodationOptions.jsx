@@ -18,7 +18,7 @@ export default function AccommodationOptions({
         onClick={() => toggleOption("Option2")}
         selected={selectedOption === "Option2"}
       >
-        <Value>Online</Value>
+        <Value>Sem Hotel</Value>
         <Label>+ R$0</Label>
       </StyledBox>
     </div>
