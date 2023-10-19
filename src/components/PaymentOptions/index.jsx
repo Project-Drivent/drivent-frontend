@@ -4,14 +4,18 @@ import { useState } from "react";
 import AccommodationOptions from "./AccommodationOptions";
 import { ReserveButton } from "./reserveButton";
 import CreditCard from "./CreditCard";
+import useTicketType from "../../hooks/api/useTicket";
 
 export default function PaymentOptions() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedAccommodationOption, setSelectedAccommodationOption] = useState(null);
   const [reservaFinalizada, setReservaFinalizada] = useState(false);
+  const ticketTypes = useTicketType();
+
+  console.log(ticketTypes); // FIXME: Apagar linha
 
   const handleBoxClick = (index) => {
-    if (selectedOption === index) {
+    if (selectedOption === true) {
       setSelectedOption(null);
       setSelectedAccommodationOption(null);
     } else {
@@ -57,21 +61,24 @@ export default function PaymentOptions() {
         <>
           <SubTitle>Primeiro, escolha sua modalidade</SubTitle>
 
+
           <BoxesContainer>
-            <StyledBox
-              onClick={() => handleBoxClick(0)}
-              selected={selectedOption === 0}
-            >
-              <Value>Presencial</Value>
-              <Label>R$250</Label>
-            </StyledBox>
-            <StyledBox
-              onClick={() => handleBoxClick(1)}
-              selected={selectedOption === 1}
-            >
-              <Value>Online</Value>
-              <Label>R$100</Label>
-            </StyledBox>
+          {!ticketTypes.ticketLoading &&
+
+            ticketTypes.tickets.map ((item, index) => (
+              
+              //💡 {item.includesHotel} e {item.isRemote} -> retorna true ou false
+              
+              <StyledBox
+                key={index}
+                onClick={() => handleBoxClick(index)}
+                selected={selectedOption === index}
+              >
+                <Value>{item.name}</Value>
+                <Label>{`R$ ${item.price}`}</Label>
+              </StyledBox>
+      
+          ))}
           </BoxesContainer>
 
           {selectedOption !== null && (
