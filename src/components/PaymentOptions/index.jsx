@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import { useState,useEffect } from "react";
 import { Title, SubTitle, SubTitleAccommodation, SubTitleCard } from "./titleSubTitle";
 import { BoxesContainer, StyledBox, Value, Label, StyledBoxCard } from "./boxOptions";
 import { ReserveButton } from "./reserveButton";
 import CreditCard from "./CreditCard";
 import useTicketType, { useTicket } from "../../hooks/api/useTicket";
-import useEnrollment from "../../hooks/api/useEnrollment";
 import AccommodationOptions from "./AccommodationOptions";
 
 export default function PaymentOptions() {
@@ -13,12 +12,18 @@ export default function PaymentOptions() {
   const [reservaFinalizada, setReservaFinalizada] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const ticketTypes = useTicketType();
-  const enrollmentData = useEnrollment();
   const ticket = useTicket();
 
-  console.log(ticket);
-  console.log(ticketTypes);
-  console.log(enrollmentData);
+
+useEffect(() => {
+    if (ticket.ticket !== null) { 
+      // Se o usuário já tiver um ticket, defina reservaFinalizada como true.
+      setReservaFinalizada(true);
+    }
+}, [ticket]);
+
+  
+    console.log(ticket.ticket)
 
   const handleBoxClick = (index) => {
     if (selectedOption === index) {
@@ -109,26 +114,36 @@ export default function PaymentOptions() {
           </BoxesContainer>
 
           {selectedOption !== null && selectedTicket.name === "Presencial" && (
-            <>
-              <SubTitleAccommodation>
-                Ótimo! Agora escolha sua modalidade de hospedagem
-              </SubTitleAccommodation>
-              <AccommodationOptions
-                selectedOption={selectedAccommodationOption}
-                onOptionSelect={setSelectedAccommodationOption}
-                selectedTicket={selectedTicket}
-              />
-            </>
-          )}
+  <>
+    <SubTitleAccommodation>
+      Ótimo! Agora escolha sua modalidade de hospedagem
+    </SubTitleAccommodation>
+    <AccommodationOptions
+      selectedOption={selectedAccommodationOption}
+      onOptionSelect={setSelectedAccommodationOption}
+      selectedTicket={selectedTicket}
+    />
+  </>
+)}
 
-          {selectedAccommodationOption !== null && (
-            <>
-              <SubTitleAccommodation>
+{selectedAccommodationOption !== null && (
+  <>
+    <SubTitleAccommodation>
+      Fechado! O total ficou em R$ {calcularSomaTotal()}. Agora é só confirmar:
+    </SubTitleAccommodation>
+    <ReserveButton onClick={finalizarReserva}>Finalizar Reserva</ReserveButton>
+  </>
+)}
+
+  {selectedOption !== null && selectedTicket.name === "Online" && (
+    <> <SubTitleAccommodation>
                 Fechado! O total ficou em R$ {calcularSomaTotal()}. Agora é só confirmar:
               </SubTitleAccommodation>
-              <ReserveButton onClick={finalizarReserva}>Finalizar Reserva</ReserveButton>
-            </>
-          )}
+       <ReserveButton onClick={finalizarReserva}>Finalizar Reserva</ReserveButton>
+    </>
+                
+)}
+
         </>
       )}
     </>
