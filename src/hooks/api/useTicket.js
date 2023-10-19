@@ -23,3 +23,22 @@ export default function useTicketType() {
     createTicket,
   };
 }
+
+export function useTicket() {
+  const token = useToken();
+  
+  const {
+    data: ticket,
+    loading: ticketLoading,
+    error: ticketError,
+    act: getTicket
+  } = useAsync(() => ticketApi.getTicket(token));
+
+
+  return {
+    ticket,
+    ticketLoading,
+    ticketError,
+    getTicket
+  };
+}

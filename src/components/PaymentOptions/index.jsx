@@ -4,7 +4,7 @@ import { useState } from "react";
 import AccommodationOptions from "./AccommodationOptions";
 import { ReserveButton } from "./reserveButton";
 import CreditCard from "./CreditCard";
-import useTicketType from "../../hooks/api/useTicket";
+import useTicketType, { useTicket } from "../../hooks/api/useTicket";
 import useEnrollment from "../../hooks/api/useEnrollment";
 
 export default function PaymentOptions() {
@@ -14,9 +14,12 @@ export default function PaymentOptions() {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const ticketTypes = useTicketType();
   const enrollmentData = useEnrollment();
+  const ticket = useTicket();
 
-  console.log(ticketTypes);
-  console.log(enrollmentData);
+
+  console.log(ticket)
+ console.log(ticketTypes);
+ console.log(enrollmentData);
 
   const handleBoxClick = (index) => {
     if (selectedOption === index) {
