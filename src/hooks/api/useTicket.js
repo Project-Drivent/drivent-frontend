@@ -11,9 +11,15 @@ export default function useTicketType() {
     error: ticketError,
   } = useAsync(() => ticketApi.getTicketsTypes(token));
 
+  // Função para criar um ticket
+  const createTicket = (userId, ticketTypeId) => {
+    return ticketApi.postTicket(token, userId, ticketTypeId);
+  };
+
   return {
     tickets,
     ticketLoading,
     ticketError,
+    createTicket,
   };
 }
