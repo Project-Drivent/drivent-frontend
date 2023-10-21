@@ -12,6 +12,7 @@ import Link from '../../components/Link';
 import EventInfoContext from '../../contexts/EventInfoContext';
 
 import useSignUp from '../../hooks/api/useSignUp';
+import GitHubLoginButton from '../../components/Form/GitHubLoginButton';
 
 export default function Enroll() {
   const [email, setEmail] = useState('');
@@ -54,6 +55,9 @@ export default function Enroll() {
           <Input label="Repita sua senha" type="password" fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
           <Button type="submit" color="primary" fullWidth disabled={loadingSignUp}>Inscrever</Button>
         </form>
+      </Row>
+      <Row>
+        <GitHubLoginButton >Inscrever com o GitHub</GitHubLoginButton>
       </Row>
       <Row>
         <Link to="/sign-in">Já está inscrito? Faça login</Link>
