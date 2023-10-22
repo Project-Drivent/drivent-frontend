@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+
 export default styled.div`
   height: 100vh;
   max-height: ${props => props.height || '600px'};
@@ -10,8 +11,7 @@ export default styled.div`
   border-radius: 20px;
   background-color: #fff;
   box-shadow: 4px 4px 10px 5px rgba(0, 0, 0, .2);
-
-  display: flex;
+ 
   overflow: hidden;
 
   @media (max-width: 600px) {
@@ -23,3 +23,4 @@ export default styled.div`
     max-width: initial;
   }
 `;
+

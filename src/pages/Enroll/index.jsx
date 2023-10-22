@@ -6,7 +6,7 @@ import AuthLayout from '../../layouts/Auth';
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
-import { Row, Title, Label } from '../../components/Auth';
+import { Row, Title, Label, LessProminentRow } from '../../components/Auth';
 import Link from '../../components/Link';
 
 import EventInfoContext from '../../contexts/EventInfoContext';
@@ -57,10 +57,15 @@ export default function Enroll() {
         </form>
       </Row>
       <Row>
-        <GitHubLoginButton >Inscrever com o GitHub</GitHubLoginButton>
+        <Link to="/sign-in">Já está inscrito? Faça login</Link>
       </Row>
       <Row>
-        <Link to="/sign-in">Já está inscrito? Faça login</Link>
+      <LessProminentRow>
+        ou
+      </LessProminentRow>
+      </Row>
+      <Row>
+      <GitHubLoginButton></GitHubLoginButton>
       </Row>
     </AuthLayout>
   );

@@ -7,7 +7,7 @@ import AuthLayout from '../../layouts/Auth';
 import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
 import Link from '../../components/Link';
-import { Row, Title, Label } from '../../components/Auth';
+import { Row, Title, Label, LessProminentRow } from '../../components/Auth';
 
 import EventInfoContext from '../../contexts/EventInfoContext';
 import UserContext from '../../contexts/UserContext';
@@ -39,17 +39,7 @@ export default function SignIn() {
     }
   } 
 
-  // Função para lidar com o login do GitHub
-  const handleGitHubLogin = async () => {
-    try {
-      // Realize o processo de autenticação com o GitHub usando a biblioteca de autenticação do GitHub.
-
-      // Após a autenticação bem-sucedida, você pode navegar para a página desejada (por exemplo, '/dashboard').
-     
-    } catch (error) {
-      console.error('Erro ao autenticar com o GitHub', error);
-    }
-  };
+ 
 
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
@@ -66,10 +56,17 @@ export default function SignIn() {
         </form>
       </Row>
       <Row>
-        <GitHubLoginButton onClick={handleGitHubLogin}>Entrar com o GitHub</GitHubLoginButton>
       </Row>
       <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
+      </Row>
+      <Row>
+      <LessProminentRow>
+       ou
+      </LessProminentRow>
+      </Row>
+      <Row>
+      <GitHubLoginButton></GitHubLoginButton>
       </Row>
     </AuthLayout>
   );
