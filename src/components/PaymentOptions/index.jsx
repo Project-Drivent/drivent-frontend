@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Title, SubTitle, SubTitleAccommodation, SubTitleCard,EnrollmentErrorMessage,CenteredContent } from "./titleSubTitle";
 import { BoxesContainer, StyledBox, Value, Label, StyledBoxCard } from "./boxOptions";
 import { ReserveButton } from "./reserveButton";
-import CreditCard from "./CreditCard";
 import useTicketType, { useTicket } from "../../hooks/api/useTicket";
 import AccommodationOptions from "./AccommodationOptions";
 import useEnrollment from "../../hooks/api/useEnrollment";
@@ -78,8 +77,7 @@ export default function PaymentOptions() {
 
       {enrollmentUser.enrollment === null ? (
         <CenteredContent>
-          <EnrollmentErrorMessage>Você precisa completar sua inscrição antes
-de prosseguir pra escolha de ingresso</EnrollmentErrorMessage>
+          <EnrollmentErrorMessage>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</EnrollmentErrorMessage>
         </CenteredContent>
       ) : (
         reservaFinalizada ? (
@@ -88,22 +86,8 @@ de prosseguir pra escolha de ingresso</EnrollmentErrorMessage>
               <SubTitleCard>Ingresso escolhido</SubTitleCard>
             </div>
 
-            <BoxesContainer>
-              <StyledBoxCard
-                onClick={() => handleBoxClick(0)}
-                selected={selectedOption === 0}
-              >
-                <Value>Presencial + Com Hotel</Value>
-                <Label>R$ {calcularSomaTotal()}</Label>
-              </StyledBoxCard>
-            </BoxesContainer>
+            {/* Área de pagamento: Cartão */}
 
-            <div>
-              <SubTitleCard>Pagamento</SubTitleCard>
-              <div>
-                <CreditCard></CreditCard>
-              </div>
-            </div>
           </>
         ) : (
           <>
