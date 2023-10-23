@@ -15,7 +15,9 @@ export default function PaymentOptions() {
   const ticket = useTicket();
   const enrollmentUser = useEnrollment();
 
-  console.log(enrollmentUser)
+  // console.log('Usuário inscrito?', enrollmentUser);
+  // console.log('Usuário c/ ticket?', ticket);
+  // console.log('Ticket type existe?', ticketTypes )
 
   useEffect(() => {
     if (ticket.ticket !== null) { 
@@ -108,7 +110,7 @@ export default function PaymentOptions() {
               }
             </BoxesContainer>
 
-            {selectedOption !== null && selectedTicket.name === "Presencial" && (
+            {selectedOption !== null && selectedTicket.name.toLowerCase() === "presencial" && (
               <>
                 <SubTitleAccommodation>
                   Ótimo! Agora escolha sua modalidade de hospedagem
