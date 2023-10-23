@@ -132,7 +132,7 @@ export default function PaymentOptions() {
               </>
             )}
 
-            {selectedOption !== null && selectedTicket.name === "Online" && (
+            {selectedOption !== null && selectedTicket.name.toLowerCase() === "online" && (
               <>
                 <SubTitleAccommodation>
                   Fechado! O total ficou em R$ {calcularSomaTotal()}. Agora é só confirmar:

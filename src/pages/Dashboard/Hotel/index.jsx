@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import styled from "styled-components";
 import NotTicketMessage from "../../../components/HotelComponents/NotTicketMessage";
 import NotReservetionMessage from "../../../components/HotelComponents/NotReservetionMessage";
 import useTicket from "../../../hooks/api/useTicket";
 import useHotels from "../../../hooks/api/useHotel";
-import { useEffect } from "react";
+import { getRoomTypes, getCapacity } from "../../../components/HotelComponents/RoomData";
+import { Title, RoomCard, HotelsContainer } from "../../../components/HotelComponents/HotelStyled";
 
 export default function Hotel() {
   const ticket = useTicket();
@@ -19,13 +20,13 @@ export default function Hotel() {
     setHotels(hotel.hotels);
   }, [hotel.hotels]);
 
-  if (ticket.tickets === null) {
-    return <NotTicketMessage />;
+  if (ticket.tickets) {
+    if (ticket.tickets.length === 0) {
+      return <NotTicketMessage />;
+    }
+    if (ticket.tickets[0].includesHotel === false)
+      return <NotReservetionMessage />;
   }
-  //if (ticket.tickets) {
-  //if (ticket.ticket.TicketType.includesHotel === false)
-     // return <NotReservetionMessage />;
- // }
 
   function Hoteis() {
     if (hotels) {
@@ -51,22 +52,22 @@ export default function Hotel() {
           <h2>{getRoomTypes(hotel.Rooms)}</h2>
           <br />
           <p>Vagas Disponíveis</p>
-          <h2>{getHotelCapacity(hotel.Rooms)}</h2>
+          <h2>{getCapacity(hotel.Rooms)}</h2>
         </Button>
       ));
     } else {
-      return <p>Carregando</p>;
+      return <p>Carregando...</p>;
     }
   }
 
-  function Quartos(clickedHotel) {
+  function Rooms(clickedHotel) {
     if (clickedHotel && clickedHotel.Rooms) {
       return (
         <div>
           {clickedHotel.Rooms.map((room) => (
-            <RoomCardContainer key={room.id}>
-              <h1>{room.name}</h1>
-            </RoomCardContainer>
+            <RoomCard key={room.id} style={{ backgroundColor: room.capacity === 0 ? '#CECECE' : 'white' }}>
+               <h1>{room.name}</h1>
+            </RoomCard>
           ))}
         </div>
       );
@@ -74,50 +75,6 @@ export default function Hotel() {
       return <p>Carregando</p>;
     }
   }
-
-  function getHotelCapacity(rooms) {
-    let capacity = 0;
-    let reserved = 0;
-    rooms.forEach((room) => {
-      capacity += room.capacity;
-      if (room.Booking) {
-        reserved += room.Booking.length;
-      }
-    });
-    return capacity - reserved;
-  }
-
-  function getRoomTypes(rooms) {
-    console.log(rooms);
-    const roomTypes = {
-      1: false,
-      2: false,
-      3: false,
-    };
-
-    rooms.forEach((room) => {
-      roomTypes[room.capacity] = true;
-    });
-
-    if (roomTypes[1] && !roomTypes[2] && !roomTypes[3]) {
-      return "Single";
-    } else if (roomTypes[2] && !roomTypes[1] && !roomTypes[3]) {
-      return "Double";
-    } else if (roomTypes[3] && !roomTypes[1] && !roomTypes[2]) {
-      return "Triple";
-    } else if (roomTypes[1] && roomTypes[2] && !roomTypes[3]) {
-      return "Single e Double";
-    } else if (roomTypes[1] && roomTypes[3] && !roomTypes[2]) {
-      return "Single e Triple";
-    } else if (roomTypes[2] && roomTypes[3] && !roomTypes[1]) {
-      return "Double e Triple";
-    } else if (roomTypes[1] && roomTypes[2] && roomTypes[3]) {
-      return "Single, Double e Triple";
-    } else {
-      return "Não informado";
-    }
-  }
-
   return (
     <>
       <StyledTypography variant="h4"> Escolha de hotel e quarto</StyledTypography>
@@ -134,7 +91,7 @@ export default function Hotel() {
             Ótima pedida! Agora escolha o seu quarto:
           </Title>
 
-          {Quartos(clickedHotel)}
+          {Rooms(clickedHotel)}
 
         </div>
       )}
@@ -144,34 +101,6 @@ export default function Hotel() {
 
 const StyledTypography = styled(Typography)`
   margin-bottom: 20px !important;
-`;
-
-const RoomCardContainer = styled.div`
-  width: 190px;
-  height: 45px;
-  border-radius: 10px;
-  border: 1px solid #cecece;
-  margin-right: 17px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 10px;
-  box-sizing: border-box;
-  background-color: #E9E9E9;
-  cursor: pointer;
-  h1 {
-    color: #CECECE ;
-    text-align: center;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    max-width: 70px;
-    max-height: 23px;
-    overflow: hidden;
-    margin-left: 6px;
-  }
 `;
 
 const Button = styled.button`
@@ -213,32 +142,3 @@ h2{
   color: #3C3C3C;
 }`
   ;
-
-const HotelsContainer = styled.div`
-  width: 100%;
-  overflow-x: scroll;
-  display: flex;
-  gap: 20px;
-  scrollbar-width: thin;
-  scrollbar-color: #dcdcdc #f5f5f5;
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #dcdcdc;
-    border-radius: 4px;*
-  }
-  &::-webkit-scrollbar-track {
-    background-color: #ffffff;
-  }
-`;
-const Title = styled.h1`
-  font-family: 'Roboto', sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 23px;
-  text-align: left;
-  color: #8e8e8e;
-  margin-bottom: 20px;
-`;
