@@ -5,6 +5,7 @@ import { ReserveButton } from "./reserveButton";
 import useTicketType, { useTicket } from "../../hooks/api/useTicket";
 import AccommodationOptions from "./AccommodationOptions";
 import useEnrollment from "../../hooks/api/useEnrollment";
+import CreditCard from "./creditCard";
 
 export default function PaymentOptions() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -88,7 +89,22 @@ export default function PaymentOptions() {
               <SubTitleCard>Ingresso escolhido</SubTitleCard>
             </div>
 
-            {/* Área de pagamento: Cartão */}
+            <BoxesContainer>
+            <StyledBoxCard
+              onClick={() => handleBoxClick(0)}
+              selected={selectedOption === 0}
+            >
+              <Value>Presencial + Com Hotel</Value>
+              <Label>R$600</Label>
+            </StyledBoxCard>
+          </BoxesContainer>
+
+          <div>
+            <SubTitleCard>Pagamento</SubTitleCard>
+            <div>
+              <CreditCard></CreditCard>
+            </div>
+          </div>
 
           </>
         ) : (
