@@ -16,6 +16,7 @@ const CreditCardContainer = styled.div`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   color: #fff;
   margin-top: 14px;
+  margin-left: 8px;
   height: 139px;
   font-family: 'Times New Roman', Times, serif;
 

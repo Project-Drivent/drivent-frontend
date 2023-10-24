@@ -17,8 +17,8 @@ export default function PaymentOptions() {
   const enrollmentUser = useEnrollment();
 
   // console.log('Usuário inscrito?', enrollmentUser);
-  // console.log('Usuário c/ ticket?', ticket);
-  // console.log('Ticket type existe?', ticketTypes )
+  // console.log('Usuário c/ ticket?', ticket.ticket);
+  // console.log('Ticket type existe?', ticketTypes );
 
   useEffect(() => {
     if (ticket.ticket !== null) { 
@@ -90,12 +90,11 @@ export default function PaymentOptions() {
             </div>
 
             <BoxesContainer>
-            <StyledBoxCard
-              onClick={() => handleBoxClick(0)}
-              selected={selectedOption === 0}
+            <StyledBoxCard 
+              style={{ backgroundColor: '#FFEED2', border: '#FFEED2' }}
             >
-              <Value>Presencial + Com Hotel</Value>
-              <Label>R$600</Label>
+              <Value style={{ color: '#454545'}} >Presencial + Com Hotel</Value>
+              <Label style={{ color: '#898989'}} >R$ 600</Label>
             </StyledBoxCard>
           </BoxesContainer>
 
