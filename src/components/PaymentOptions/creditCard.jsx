@@ -107,7 +107,7 @@ function CreditCard() {
         <CardTop>
           <Chip />
         </CardTop>
-        <p>•••• •••• •••• ••••</p>
+        <p style={{ fontSize: "28px"}}>•••• •••• •••• ••••</p>
         <span>
           <p>YOUR NAME HERE</p>
           <div>
