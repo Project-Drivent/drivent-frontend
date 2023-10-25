@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,6 +15,9 @@ import UserContext from '../../contexts/UserContext';
 import useSignIn from '../../hooks/api/useSignIn';
 import GitHubLoginButton from '../../components/Form/GitHubLoginButton';
 
+import useGithubSignIn from '../../hooks/api/useGithubSignIn';
+
+
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,14 +26,35 @@ export default function SignIn() {
 
   const { eventInfo } = useContext(EventInfoContext);
   const { setUserData } = useContext(UserContext);
+  
+
+  const { githubSignInLoading, githubSignIn } = useGithubSignIn();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (code) {
+      githubSignIn(code)
+        .then((res) => {
+          setUserData(res);
+          console.log(res)
+          console.log(res);
+          toast('Login realizado com sucesso!');
+          navigate('/dashboard');
+        })
+
+    }
+  }, [])
   
   async function submit(event) {
     event.preventDefault();
 
     try {
       const userData = await signIn(email, password);
+      console.log(userData);
       setUserData(userData);
       toast('Login realizado com sucesso!');
       navigate('/dashboard');
@@ -39,7 +63,6 @@ export default function SignIn() {
     }
   } 
 
- 
 
   return (
     <AuthLayout background={eventInfo.backgroundImageUrl}>
@@ -66,7 +89,7 @@ export default function SignIn() {
       </LessProminentRow>
       </Row>
       <Row>
-      <GitHubLoginButton></GitHubLoginButton>
+      <GitHubLoginButton disabled={loadingSignIn || githubSignInLoading}/>
       </Row>
     </AuthLayout>
   );

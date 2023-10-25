@@ -13,6 +13,7 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 
 import useSignUp from '../../hooks/api/useSignUp';
 import GitHubLoginButton from '../../components/Form/GitHubLoginButton';
+import useGithubSignIn from '../../hooks/api/useGithubSignIn';
 
 export default function Enroll() {
   const [email, setEmail] = useState('');
@@ -20,6 +21,7 @@ export default function Enroll() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const { loadingSignUp, signUp } = useSignUp();
+  const { githubSignInLoading } = useGithubSignIn();
 
   const navigate = useNavigate();
   
@@ -65,7 +67,7 @@ export default function Enroll() {
       </LessProminentRow>
       </Row>
       <Row>
-      <GitHubLoginButton></GitHubLoginButton>
+      <GitHubLoginButton disabled={loadingSignUp || githubSignInLoading}/>
       </Row>
     </AuthLayout>
   );

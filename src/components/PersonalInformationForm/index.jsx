@@ -25,7 +25,6 @@ import FormValidations from './FormValidations';
 dayjs.extend(CustomParseFormat);
 
 export default function PersonalInformationForm() {
-  console.log(localStorage.getItem('github'))
   const [dynamicInputIsLoading, setDynamicInputIsLoading] = useState(false);
   const { getCep } = useCep();
   const { enrollment } = useEnrollment();
