@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import chip from "/chip.png";
+import React, { useState } from "react";
+
 
 const Container = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  position: absolute;
 `;
 
 const CreditCardContainer = styled.div`
@@ -100,14 +103,89 @@ const ExampleText = styled.p`
   margin-left: 5px;
 `;
 
+const Button = styled.button`
+width: 182px;
+height: 37px;
+border-radius: 4px;
+border: none;
+box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+font-family: Roboto;
+font-size: 12px;
+font-weight: 400;
+line-height: 16px;
+letter-spacing: 0em;
+text-align: center;
+position: relative;
+    top: 250px;
+    right: 860px;
+
+
+
+
+
+`
+
 function CreditCard() {
+
+  const [cardNumber, setCardNumber] = useState("");
+  const [name, setName] = useState("");
+  const [validThru, setValidThru] = useState("");
+  const [cvc, setCVC] = useState("");
+  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
+  const [showForm, setShowForm] = useState(true);
+
+
+  const handlePayment = () => {
+
+    
+    // Função para validar o número do cartão usando o algoritmo de Luhn
+    const isCardNumberValid = (cardNumber) => {
+      const cardNumberDigits = cardNumber.replace(/\D/g, "").split('').map(Number);
+      let sum = 0;
+      let double = false;
+      for (let i = cardNumberDigits.length - 1; i >= 0; i--) {
+        let digit = cardNumberDigits[i];
+        if (double) {
+          digit *= 2;
+          if (digit > 9) {
+            digit -= 9;
+          }
+        }
+        sum += digit;
+        double = !double;
+      }
+      return sum % 10 === 0;
+    };
+
+    // Função para validar o formato da data de validade (MM/AA)
+    const isExpirationValid = (validThru) => {
+      const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+      return regex.test(validThru);
+    };
+
+    // Função para validar o CVC (3 ou 4 dígitos)
+    const isCVCValid = (cvc) => {
+      const regex = /^\d{3,4}$/;
+      return regex.test(cvc);
+    };
+
+    if (isCardNumberValid(cardNumber) && name && isExpirationValid(validThru) && isCVCValid(cvc)) {
+      setPaymentConfirmed(true);
+      // Oculta o formulário após a confirmação do pagamento
+      setShowForm(false);
+    }
+  };
   return (
-    <Container>
+<Container>
+  {paymentConfirmed ? (
+    <div>Mensagem de pagamento confirmado</div>
+  ) : (
+    <>
       <CreditCardContainer>
         <CardTop>
           <Chip />
         </CardTop>
-        <p style={{ fontSize: "28px"}}>•••• •••• •••• ••••</p>
+        <p style={{ fontSize: "28px" }}>•••• •••• •••• ••••</p>
         <span>
           <p>YOUR NAME HERE</p>
           <div>
@@ -117,15 +195,39 @@ function CreditCard() {
         </span>
       </CreditCardContainer>
       <InputGroup>
-        <InputStyle type="number" placeholder="Card Number" />
+        <InputStyle
+          type="tel"
+          placeholder="Card Number"
+          value={cardNumber}
+          onChange={(e) => setCardNumber(e.target.value)}
+        />
         <ExampleText>E.g.: 49..., 51..., 36..., 37...</ExampleText>
-        <InputStyle type="text" placeholder="Name" />
+        <InputStyle
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <InputRow>
-          <InputStyle type="txt" placeholder="Valid Thru (MM/AA)" />
-          <InputStyle type="number" placeholder="CVC" />
+          <InputStyle
+            type="text"
+            placeholder="Valid Thru (MM/AA)"
+            value={validThru}
+            onChange={(e) => setValidThru(e.target.value)}
+          />
+          <InputStyle
+            type="tel"
+            placeholder="CVC"
+            value={cvc}
+            onChange={(e) => setCVC(e.target.value)}
+          />
         </InputRow>
       </InputGroup>
-    </Container>
+      <Button onClick={handlePayment}>FINALIZAR PAGAMENTO</Button>
+    </>
+  )}
+</Container>
+
   );
 }
 
