@@ -6,12 +6,14 @@ import AuthLayout from '../../layouts/Auth';
 
 import Input from '../../components/Form/Input';
 import Button from '../../components/Form/Button';
-import { Row, Title, Label } from '../../components/Auth';
+import { Row, Title, Label, LessProminentRow } from '../../components/Auth';
 import Link from '../../components/Link';
 
 import EventInfoContext from '../../contexts/EventInfoContext';
 
 import useSignUp from '../../hooks/api/useSignUp';
+import GitHubLoginButton from '../../components/Form/GitHubLoginButton';
+import useGithubSignIn from '../../hooks/api/useGithubSignIn';
 
 export default function Enroll() {
   const [email, setEmail] = useState('');
@@ -19,6 +21,7 @@ export default function Enroll() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const { loadingSignUp, signUp } = useSignUp();
+  const { githubSignInLoading } = useGithubSignIn();
 
   const navigate = useNavigate();
   
@@ -57,6 +60,14 @@ export default function Enroll() {
       </Row>
       <Row>
         <Link to="/sign-in">Já está inscrito? Faça login</Link>
+      </Row>
+      <Row>
+      <LessProminentRow>
+        ou
+      </LessProminentRow>
+      </Row>
+      <Row>
+      <GitHubLoginButton disabled={loadingSignUp || githubSignInLoading}/>
       </Row>
     </AuthLayout>
   );

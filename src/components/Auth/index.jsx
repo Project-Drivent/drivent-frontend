@@ -26,4 +26,29 @@ export const Row = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  margin-bottom: 8px;
+`;
+
+export const LessProminentRow = styled.div`
+  opacity: 0.7;
+  font-weight: lighter;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #a8a8b3;
+  }
+
+  &::before {
+    margin-right: 16px;
+  }
+
+  &::after {
+    margin-left: 16px;
+  }
 `;

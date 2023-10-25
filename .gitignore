@@ -131,7 +131,5 @@ dist
 
 #pnpm
 pnpm-lock.yaml
-
-
-# macos
-.DS_Store
+package-lock.json
+.vercel
