@@ -1,23 +1,12 @@
-import { useHistory } from 'react-router-dom';
+
 import styled from 'styled-components';
-import axios from 'axios'; // Importe o Axios se não estiver importado.
+import { redirectToGithubAuthorization, handleGithubCallback } from '../../services/githubApi';
 
 const GitHubLoginButton = () => {
-  const history = useHistory(); // Inicialize o useHistory
-
+ handleGithubCallback();
+ 
   const handleGitHubLogin = async () => {
-    try {
-      // Realize o processo de autenticação com o GitHub.
-      const { data } = await axios.get(`/oauth/github/login`); // Use uma rota correta para a autenticação.
-
-      // Após a autenticação bem-sucedida, redirecione o usuário para a página desejada.
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        history.push('/dashboard'); // Substitua '/dashboard' pela URL da página para a qual deseja redirecionar.
-      }
-    } catch (error) {
-      console.error('Erro ao autenticar com o GitHub', error);
-    }
+    await redirectToGithubAuthorization();
   };
   
   return (

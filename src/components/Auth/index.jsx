@@ -32,16 +32,23 @@ export const Row = styled.div`
 export const LessProminentRow = styled.div`
   opacity: 0.7;
   font-weight: lighter;
-  position: relative;
-
-  ::before {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  
+  &::before,
+  &::after {
     content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 1px solid black; /* You can adjust the border properties as needed */
-    pointer-events: none;
+    flex: 1;
+    height: 1px;
+    background: #a8a8b3;
+  }
+
+  &::before {
+    margin-right: 16px;
+  }
+
+  &::after {
+    margin-left: 16px;
   }
 `;
