@@ -29,7 +29,7 @@ export default function Hotel() {
   const includesHotel = ticket.ticket?.TicketType.includesHotel;
   const isRemote = ticket.ticket?.TicketType.isRemote;
 
-  if (status === 'RESERVED') return <NotTicketMessage />;
+  if (status !== 'PAID') return <NotTicketMessage />;
   if (!includesHotel || isRemote) return <NotReservetionMessage />;
 
   function Hoteis() {
