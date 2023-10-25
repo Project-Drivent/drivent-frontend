@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import styled from "styled-components";
 import NotTicketMessage from "../../../components/HotelComponents/NotTicketMessage";
 import NotReservetionMessage from "../../../components/HotelComponents/NotReservetionMessage";
-import useTicket from "../../../hooks/api/useTicket";
+import { useTicket } from "../../../hooks/api/useTicket";
 import useHotels from "../../../hooks/api/useHotel";
 import { getRoomTypes, getCapacity } from "../../../components/HotelComponents/RoomData";
 import { Title, RoomCard, HotelsContainer } from "../../../components/HotelComponents/HotelStyled";
@@ -16,17 +16,21 @@ export default function Hotel() {
   const [clickedHotel, setClickedHotel] = useState(null);
   const [selectedButton, setSelectedButton] = useState(null);
 
+  // Onde pegar as infos --- PODE APAGAR ---
+  // console.log('Está pago?', ticket.ticket?.status); // --> 'RESERVED' or 'PAID'
+  // console.log('Inclui hotel?', ticket.ticket?.TicketType.includesHotel); // --> true or false
+  // console.log('É Remoto?', ticket.ticket?.TicketType.isRemote);  // --> true or false
+
   useEffect(() => {
     setHotels(hotel.hotels);
   }, [hotel.hotels]);
 
-  if (ticket.tickets) {
-    if (ticket.tickets.length === 0) {
-      return <NotTicketMessage />;
-    }
-    if (ticket.tickets[0].includesHotel === false)
-      return <NotReservetionMessage />;
-  }
+  const status = ticket.ticket?.status;
+  const includesHotel = ticket.ticket?.TicketType.includesHotel;
+  const isRemote = ticket.ticket?.TicketType.isRemote;
+
+  if (status === 'RESERVED') return <NotTicketMessage />;
+  if (!includesHotel || isRemote) return <NotReservetionMessage />;
 
   function Hoteis() {
     if (hotels) {

@@ -15,17 +15,23 @@ export default function PaymentOptions() {
   const ticketTypes = useTicketType();
   const ticket = useTicket();
   const enrollmentUser = useEnrollment();
+  const [createdTicket, setCreatedTicket] = useState(null)
+
+  // console.log(createdTicket)
 
   // console.log('Usuário inscrito?', enrollmentUser);
-  // console.log('Usuário c/ ticket?', ticket);
-  // console.log('Ticket type existe?', ticketTypes )
+console.log('Usuário c/ ticket?', ticket.ticket);
+  // console.log('Ticket type existe?', ticketTypes );
 
   useEffect(() => {
-    if (ticket.ticket !== null) { 
+    if (ticket.ticket && ticket.ticket !== null) { 
       // Se o usuário já tiver um ticket, defina reservaFinalizada como true.
       setReservaFinalizada(true);
     }
-  }, [ticket]);
+    if (createdTicket === null && reservaFinalizada) {
+      setCreatedTicket(ticket.ticket?.TicketType);
+    }
+  }, [ticket, createdTicket, reservaFinalizada]);
 
   const resetStates = () => {
     setSelectedOption(null);
@@ -61,10 +67,15 @@ export default function PaymentOptions() {
 
   const finalizarReserva = async () => {
     if (selectedTicket) {
+      let incremento = 0;
+      if (selectedAccommodationOption === "Option1") {
+        incremento = 1;
+      }
+      const response = await ticketTypes.createTicket(selectedTicket.id + incremento);
       try {
-        const response = await ticketTypes.createTicket(selectedTicket.id);
         console.log("Ticket criado com sucesso:", response);
         setReservaFinalizada(true);
+        setCreatedTicket(response.TicketType);
       } catch (error) {
         console.error("Erro ao criar o ticket:", error);
       }
@@ -90,12 +101,11 @@ export default function PaymentOptions() {
             </div>
 
             <BoxesContainer>
-            <StyledBoxCard
-              onClick={() => handleBoxClick(0)}
-              selected={selectedOption === 0}
+            <StyledBoxCard 
+              style={{ backgroundColor: '#FFEED2', border: '#FFEED2' }}
             >
-              <Value>Presencial + Com Hotel</Value>
-              <Label>R$600</Label>
+              <Value style={{ color: '#454545'}} >{createdTicket?.name}</Value>
+              <Label style={{ color: '#898989'}} >R$ {createdTicket?.price}</Label>
             </StyledBoxCard>
           </BoxesContainer>
 
@@ -111,22 +121,25 @@ export default function PaymentOptions() {
           <>
             <SubTitle>Primeiro, escolha sua modalidade</SubTitle>
 
-            <BoxesContainer>
+            <BoxesContainer>            
               {!ticketTypes.ticketLoading &&
                 ticketTypes.tickets.map((item, index) => (
-                  <StyledBox
+                  item.name !== 'Presencial + Com Hotel' &&
+                 
+                  
+                    <StyledBox
                     key={index}
-                    onClick={() => handleBoxClick(index)}
-                    selected={selectedOption === index}
-                  >
-                    <Value>{item.name}</Value>
-                    <Label>{`R$ ${item.price}`}</Label>
-                  </StyledBox>
+                      onClick={() => handleBoxClick(index)}
+                      selected={selectedOption === index}
+                    >
+                      <Value>{item.name.split(' ')[0]}</Value>
+                      <Label>{`R$ ${item.price}`}</Label>
+                    </StyledBox>
                 ))
               }
             </BoxesContainer>
 
-            {selectedOption !== null && selectedTicket.name.toLowerCase() === "presencial" && (
+            {selectedOption !== null && selectedTicket.name.split(' ')[0].toLowerCase() === "presencial" && (
               <>
                 <SubTitleAccommodation>
                   Ótimo! Agora escolha sua modalidade de hospedagem
