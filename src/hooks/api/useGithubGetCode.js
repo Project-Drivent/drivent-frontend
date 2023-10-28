@@ -1,18 +1,17 @@
 export default function useGithubGetCode() {
   const client_id = import.meta.env.VITE_CLIENT_ID;
   const redirect_uri = import.meta.env.VITE_REDIRECT_URL;
+  const scope = 'user:email read:user';
 
   const githubGetCode = () => {
     const params = {
-      response_type: "code",
-      scope: "user public_repo",
-      client_id: client_id,
-      redirect_uri: redirect_uri,
-      state: "test-t5",
+      client_id,
+      redirect_uri,
+      scope,
     };
 
     const queryString = Object.keys(params)
-      .map((key) => `${key}=${params[key]}`)
+      .map((key) => `${key}=${encodeURIComponent(params[key])}`)
       .join("&");
 
     const authUrl = `https://github.com/login/oauth/authorize?${queryString}`;
