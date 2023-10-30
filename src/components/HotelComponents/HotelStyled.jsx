@@ -21,6 +21,25 @@ export  const RoomCard = styled.div`
   }
 `;
 
+export const ReservedRoom = styled.button`
+height: 37px;
+width:182px;
+background-color:#E0E0E0;
+border-radius: 10px;
+border: 1px solid #cecece;
+margin-top: 20px;
+color: #454545 ;
+text-align: center;
+font-size: 14px;
+cursor: pointer;
+`
+
+export const RoomConteiner = styled.div`
+display: flex;
+flex-direction: row;
+gap: 15px;
+`
+
 export const HotelsContainer = styled.div`
   width: 100%;
   overflow-x: scroll;
