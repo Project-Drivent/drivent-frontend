@@ -1,12 +1,10 @@
 export default function useGithubGetCode() {
   const client_id = import.meta.env.VITE_CLIENT_ID;
-  const redirect_uri = import.meta.env.VITE_REDIRECT_URL;
   const scope = 'user:email read:user';
 
   const githubGetCode = () => {
     const params = {
       client_id,
-      redirect_uri,
       scope,
     };
 
